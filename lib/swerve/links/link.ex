@@ -1,4 +1,4 @@
-defmodule Swerve.Link do
+defmodule Swerve.Links.Link do
   use Ecto.Schema
   import Ecto.Changeset
 

@@ -16,6 +16,12 @@ defmodule SwerveWeb.Router do
 
   scope "/app", SwerveWeb do
     pipe_through :browser
+
+    live "/links", LinkLive.Index, :index
+    live "/links/new", LinkLive.Index, :new
+    live "/links/:id/edit", LinkLive.Index, :edit
+    live "/links/:id", LinkLive.Show, :show
+    live "/links/:id/show/edit", LinkLive.Show, :edit
   end
 
   # Other scopes may use custom stacks.
