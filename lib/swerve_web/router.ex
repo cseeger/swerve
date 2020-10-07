@@ -14,10 +14,10 @@ defmodule SwerveWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", SwerveWeb do
+  scope "/app", SwerveWeb do
     pipe_through :browser
 
-    live "/", PageLive, :index
+    live "/", AppLive, :index
   end
 
   # Other scopes may use custom stacks.
