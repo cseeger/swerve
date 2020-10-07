@@ -46,7 +46,8 @@ defmodule Swerve.MixProject do
       {:telemetry_poller, "~> 0.4"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"}
+      {:plug_cowboy, "~> 2.0"},
+      {:ecto_fields, "~> 1.3.0"}
     ]
   end
 
