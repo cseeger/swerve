@@ -4,6 +4,7 @@ defmodule Swerve.Links.Link do
 
   schema "links" do
     field :url, EctoFields.URL
+    field :base62_url, :string
 
     timestamps()
   end
