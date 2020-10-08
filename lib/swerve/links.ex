@@ -5,7 +5,7 @@ defmodule Swerve.Links do
 
   import Ecto.Query, warn: false
   alias Swerve.Repo
-
+  alias Ecto.Multi
   alias Swerve.Links.Link
 
   @doc """
@@ -50,9 +50,17 @@ defmodule Swerve.Links do
 
   """
   def create_link(attrs \\ %{}) do
-    %Link{}
-    |> Link.changeset(attrs)
-    |> Repo.insert()
+    # %Link{}
+    # |> Link.changeset(attrs)
+    # |> Repo.insert()
+    multi = Multi.new
+            |> Multi.insert(:link, Link.changeset(%Link{}, attrs))
+
+    case Repo.transaction(multi) do
+      {:ok, result} -> {:ok, result[:link]}
+      {:error, _, failed_value, _} ->
+        {:error, failed_value}
+    end
   end
 
   @doc """

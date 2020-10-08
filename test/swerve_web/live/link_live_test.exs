@@ -5,8 +5,8 @@ defmodule SwerveWeb.LinkLiveTest do
 
   alias Swerve.Links
 
-  @create_attrs %{url: "some url"}
-  @update_attrs %{url: "some updated url"}
+  @create_attrs %{url: "http://www.example.com"}
+  @update_attrs %{url: "http://updated.example.com"}
   @invalid_attrs %{url: nil}
 
   defp fixture(:link) do
@@ -48,7 +48,7 @@ defmodule SwerveWeb.LinkLiveTest do
         |> follow_redirect(conn, Routes.link_index_path(conn, :index))
 
       assert html =~ "Link created successfully"
-      assert html =~ "some url"
+      assert html =~ "http://www.example.com"
     end
 
     test "updates link in listing", %{conn: conn, link: link} do
@@ -70,7 +70,7 @@ defmodule SwerveWeb.LinkLiveTest do
         |> follow_redirect(conn, Routes.link_index_path(conn, :index))
 
       assert html =~ "Link updated successfully"
-      assert html =~ "some updated url"
+      assert html =~ "http://updated.example.com"
     end
 
     test "deletes link in listing", %{conn: conn, link: link} do
@@ -110,7 +110,7 @@ defmodule SwerveWeb.LinkLiveTest do
         |> follow_redirect(conn, Routes.link_show_path(conn, :show, link))
 
       assert html =~ "Link updated successfully"
-      assert html =~ "some updated url"
+      assert html =~ "http://updated.example.com"
     end
   end
 end
