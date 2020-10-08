@@ -6,9 +6,9 @@ defmodule Swerve.LinksTest do
   describe "links" do
     alias Swerve.Links.Link
 
-    @valid_attrs %{url: "some url"}
-    @update_attrs %{url: "some updated url"}
-    @invalid_attrs %{url: nil}
+    @valid_attrs %{url: "http://www.example.com"}
+    @update_attrs %{url: "http://updated.example.com"}
+    @invalid_attrs %{url: "invalid"}
 
     def link_fixture(attrs \\ %{}) do
       {:ok, link} =
@@ -31,7 +31,7 @@ defmodule Swerve.LinksTest do
 
     test "create_link/1 with valid data creates a link" do
       assert {:ok, %Link{} = link} = Links.create_link(@valid_attrs)
-      assert link.url == "some url"
+      assert link.url == "http://www.example.com"
     end
 
     test "create_link/1 with invalid data returns error changeset" do
@@ -41,7 +41,7 @@ defmodule Swerve.LinksTest do
     test "update_link/2 with valid data updates the link" do
       link = link_fixture()
       assert {:ok, %Link{} = link} = Links.update_link(link, @update_attrs)
-      assert link.url == "some updated url"
+      assert link.url == "http://updated.example.com"
     end
 
     test "update_link/2 with invalid data returns error changeset" do
