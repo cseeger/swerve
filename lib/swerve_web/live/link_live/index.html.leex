@@ -13,6 +13,7 @@
   <thead>
     <tr>
       <th>Url</th>
+      <th>Shortened Url</th>
 
       <th></th>
     </tr>
@@ -21,6 +22,7 @@
     <%= for link <- @links do %>
       <tr id="link-<%= link.id %>">
         <td><%= link.url %></td>
+        <td><%= link.base62_url %></td>
 
         <td>
           <span><%= live_redirect "Show", to: Routes.link_show_path(@socket, :show, link) %></span>

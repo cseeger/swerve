@@ -4,6 +4,7 @@ defmodule Swerve.Links do
   """
 
   import Ecto.Query, warn: false
+  import Ecto.Changeset
   alias Swerve.Repo
   alias Ecto.Multi
   alias Swerve.Links.Link
@@ -50,16 +51,17 @@ defmodule Swerve.Links do
 
   """
   def create_link(attrs \\ %{}) do
-    # %Link{}
-    # |> Link.changeset(attrs)
-    # |> Repo.insert()
     multi = Multi.new
-            |> Multi.insert(:link, Link.changeset(%Link{}, attrs))
+            |> Multi.insert(:link_insert, Link.changeset(%Link{}, attrs))
+            |> Multi.run(:link_final, fn repo, %{link_insert: link} ->
+              base62_url = Base62.encode(link.id)
+              changeset = change(link, base62_url: base62_url)
+              repo.update(changeset)
+            end)
 
-    case Repo.transaction(multi) do
-      {:ok, result} -> {:ok, result[:link]}
-      {:error, _, failed_value, _} ->
-        {:error, failed_value}
+    case Repo.transaction(multi, returning: true) do
+      {:ok, result} -> {:ok, result[:link_final]}
+      {:error, _, failed_value, _} ->{:error, failed_value}
     end
   end
 
@@ -74,7 +76,7 @@ defmodule Swerve.Links do
       iex> update_link(link, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
-  """
+ """
   def update_link(%Link{} = link, attrs) do
     link
     |> Link.changeset(attrs)

@@ -21,17 +21,20 @@ defmodule Swerve.LinksTest do
 
     test "list_links/0 returns all links" do
       link = link_fixture()
-      assert Links.list_links() == [link]
+      [%Link{url: url}] = Links.list_links()
+      assert url == link.url
     end
 
     test "get_link!/1 returns the link with given id" do
       link = link_fixture()
-      assert Links.get_link!(link.id) == link
+      [%Link{url: url}] = Links.list_links()
+      assert url == link.url
     end
 
     test "create_link/1 with valid data creates a link" do
       assert {:ok, %Link{} = link} = Links.create_link(@valid_attrs)
       assert link.url == "http://www.example.com"
+      assert link.base62_url != nil
     end
 
     test "create_link/1 with invalid data returns error changeset" do
@@ -44,10 +47,16 @@ defmodule Swerve.LinksTest do
       assert link.url == "http://updated.example.com"
     end
 
+    test "update_link/2 with valid data also updates the base62_url" do
+      link = link_fixture()
+      assert {:ok, %Link{} = link} = Links.update_link(link, @update_attrs)
+      assert link.base62_url != nil
+    end
+
     test "update_link/2 with invalid data returns error changeset" do
       link = link_fixture()
       assert {:error, %Ecto.Changeset{}} = Links.update_link(link, @invalid_attrs)
-      assert link == Links.get_link!(link.id)
+      assert link.url == Links.get_link!(link.id).url
     end
 
     test "delete_link/1 deletes the link" do
