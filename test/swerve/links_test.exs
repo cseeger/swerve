@@ -27,8 +27,7 @@ defmodule Swerve.LinksTest do
 
     test "get_link!/1 returns the link with given id" do
       link = link_fixture()
-      [%Link{url: url}] = Links.list_links()
-      assert url == link.url
+      assert Links.get_link!(link.id) == link
     end
 
     test "create_link/1 with valid data creates a link" do
@@ -68,6 +67,11 @@ defmodule Swerve.LinksTest do
     test "change_link/1 returns a link changeset" do
       link = link_fixture()
       assert %Ecto.Changeset{} = Links.change_link(link)
+    end
+
+    test "get_redirect/1 returns the link with given base62_url" do
+      link = link_fixture()
+      assert Links.get_redirect(link.base62_url) == link
     end
   end
 end

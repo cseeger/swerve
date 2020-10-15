@@ -111,4 +111,20 @@ defmodule Swerve.Links do
   def change_link(%Link{} = link, attrs \\ %{}) do
     Link.changeset(link, attrs)
   end
+
+  @doc """
+  Returns the Link via `base62_url`
+
+  ## Examples
+
+      iex> get_redirect!("abc")
+      %Link{}
+
+      iex> get_redirect!("zzzz")
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_redirect(base62_url) do
+    Repo.get_by(Link, base62_url: base62_url)
+  end
 end

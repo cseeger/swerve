@@ -24,6 +24,12 @@ defmodule SwerveWeb.Router do
     live "/links/:id/show/edit", LinkLive.Show, :edit
   end
 
+  scope "/", SwerveWeb do
+    pipe_through :browser
+
+    get "/:base62_url", RedirectController, :show
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", SwerveWeb do
   #   pipe_through :api
