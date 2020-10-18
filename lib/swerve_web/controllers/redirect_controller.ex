@@ -6,12 +6,15 @@ defmodule SwerveWeb.RedirectController do
 
   def show(conn, %{"base62_url" => base62_url}) do
     case Links.get_redirect(base62_url) do
-      %Link{url: url} -> redirect(conn, external: url) |> halt()
+      %Link{url: url} ->
+        redirect(conn, external: url) |> halt()
 
-      nil -> redirect(
+      nil ->
+        redirect(
           conn,
           to: SwerveWeb.Router.Helpers.link_index_path(conn, :index)
-      ) |> halt()
+        )
+        |> halt()
     end
   end
 end

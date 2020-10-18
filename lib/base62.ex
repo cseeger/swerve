@@ -15,7 +15,7 @@ defmodule Base62 do
   @radix 62
 
   def encode(num) when num < @radix do
-    << Enum.at(@mapping, num) >>
+    <<Enum.at(@mapping, num)>>
   end
 
   def encode(num) do
@@ -23,16 +23,18 @@ defmodule Base62 do
   end
 
   def decode(encoded) do
-    [head | remaining_chars] = String.to_charlist(encoded)
-                               |> char_indexes()
+    [head | remaining_chars] =
+      String.to_charlist(encoded)
+      |> char_indexes()
 
     accumulate_decode(remaining_chars, head)
     |> trunc()
   end
 
   def accumulate_decode(chars, acc) when length(chars) == 0, do: acc
+
   def accumulate_decode([head | remaining_chars], acc) do
-    acc = (acc * @radix) + head
+    acc = acc * @radix + head
     accumulate_decode(remaining_chars, acc)
   end
 

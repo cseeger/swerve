@@ -51,32 +51,33 @@ defmodule Swerve.Links do
 
   """
   def create_link(attrs \\ %{}) do
-    multi = Multi.new
-            |> Multi.insert(:link_insert, Link.changeset(%Link{}, attrs))
-            |> Multi.run(:link_final, fn repo, %{link_insert: link} ->
-              base62_url = Base62.encode(link.id)
-              changeset = change(link, base62_url: base62_url)
-              repo.update(changeset)
-            end)
+    multi =
+      Multi.new()
+      |> Multi.insert(:link_insert, Link.changeset(%Link{}, attrs))
+      |> Multi.run(:link_final, fn repo, %{link_insert: link} ->
+        base62_url = Base62.encode(link.id)
+        changeset = change(link, base62_url: base62_url)
+        repo.update(changeset)
+      end)
 
     case Repo.transaction(multi, returning: true) do
       {:ok, result} -> {:ok, result[:link_final]}
-      {:error, _, failed_value, _} ->{:error, failed_value}
+      {:error, _, failed_value, _} -> {:error, failed_value}
     end
   end
 
   @doc """
-  Updates a link.
+   Updates a link.
 
-  ## Examples
+   ## Examples
 
-      iex> update_link(link, %{field: new_value})
-      {:ok, %Link{}}
+       iex> update_link(link, %{field: new_value})
+       {:ok, %Link{}}
 
-      iex> update_link(link, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
+       iex> update_link(link, %{field: bad_value})
+       {:error, %Ecto.Changeset{}}
 
- """
+  """
   def update_link(%Link{} = link, attrs) do
     link
     |> Link.changeset(attrs)

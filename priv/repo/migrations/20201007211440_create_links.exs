@@ -8,6 +8,5 @@ defmodule Swerve.Repo.Migrations.CreateLinks do
 
       timestamps()
     end
-
   end
 end
