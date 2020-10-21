@@ -31,6 +31,7 @@ defmodule SwerveWeb.Router do
     pipe_through :browser
 
     get "/:base62_url", RedirectController, :show
+    get "/", Redirect, to: "/links"
   end
 
   # Other scopes may use custom stacks.
