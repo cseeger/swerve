@@ -9,6 +9,8 @@ defmodule SwerveWeb.LinkLiveTest do
   @update_attrs %{url: "http://updated.example.com"}
   @invalid_attrs %{url: nil}
 
+  setup :register_and_log_in_user
+
   defp fixture(:link) do
     {:ok, link} = Links.create_link(@create_attrs)
     link

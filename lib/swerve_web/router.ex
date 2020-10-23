@@ -32,7 +32,7 @@ defmodule SwerveWeb.Router do
   if Mix.env() in [:dev, :test] do
     import Phoenix.LiveDashboard.Router
 
-    scope "/" do
+    scope "/app" do
       pipe_through :browser
       live_dashboard "/dashboard", metrics: SwerveWeb.Telemetry
     end
@@ -40,7 +40,7 @@ defmodule SwerveWeb.Router do
 
   ## Authentication routes
 
-  scope "/", SwerveWeb do
+  scope "/app", SwerveWeb do
     pipe_through [:browser, :redirect_if_user_is_authenticated]
 
     get "/users/register", UserRegistrationController, :new
@@ -53,7 +53,7 @@ defmodule SwerveWeb.Router do
     put "/users/reset_password/:token", UserResetPasswordController, :update
   end
 
-  scope "/", SwerveWeb do
+  scope "/app", SwerveWeb do
     pipe_through [:browser, :require_authenticated_user]
 
     get "/users/settings", UserSettingsController, :edit
@@ -68,13 +68,17 @@ defmodule SwerveWeb.Router do
     live "/links/:id/show/edit", LinkLive.Show, :edit
   end
 
-  scope "/", SwerveWeb do
+  scope "/app", SwerveWeb do
     pipe_through [:browser]
 
     delete "/users/log_out", UserSessionController, :delete
     get "/users/confirm", UserConfirmationController, :new
     post "/users/confirm", UserConfirmationController, :create
     get "/users/confirm/:token", UserConfirmationController, :confirm
+  end
+
+  scope "/", SwerveWeb do
+    pipe_through [:browser]
 
     get "/:base62_url", RedirectController, :show
     get "/", PageController, :index
