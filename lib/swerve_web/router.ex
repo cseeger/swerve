@@ -17,23 +17,6 @@ defmodule SwerveWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/app", SwerveWeb do
-    pipe_through :browser
-
-    live "/links", LinkLive.Index, :index
-    live "/links/new", LinkLive.Index, :new
-    live "/links/:id/edit", LinkLive.Index, :edit
-    live "/links/:id", LinkLive.Show, :show
-    live "/links/:id/show/edit", LinkLive.Show, :edit
-  end
-
-  scope "/", SwerveWeb do
-    pipe_through :browser
-
-    get "/:base62_url", RedirectController, :show
-    get "/", Redirect, to: "/links"
-  end
-
   # Other scopes may use custom stacks.
   # scope "/api", SwerveWeb do
   #   pipe_through :api
@@ -77,6 +60,12 @@ defmodule SwerveWeb.Router do
     put "/users/settings/update_password", UserSettingsController, :update_password
     put "/users/settings/update_email", UserSettingsController, :update_email
     get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
+
+    live "/links", LinkLive.Index, :index
+    live "/links/new", LinkLive.Index, :new
+    live "/links/:id/edit", LinkLive.Index, :edit
+    live "/links/:id", LinkLive.Show, :show
+    live "/links/:id/show/edit", LinkLive.Show, :edit
   end
 
   scope "/", SwerveWeb do
@@ -86,5 +75,8 @@ defmodule SwerveWeb.Router do
     get "/users/confirm", UserConfirmationController, :new
     post "/users/confirm", UserConfirmationController, :create
     get "/users/confirm/:token", UserConfirmationController, :confirm
+
+    get "/:base62_url", RedirectController, :show
+    get "/", PageController, :index
   end
 end
